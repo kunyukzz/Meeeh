@@ -28,6 +28,5 @@ void InitPlayer(void);
 void UpdatePlayer(void);
 void DrawPlayer(void);
 void UnloadPlayer(void);
-void ResetPlayer(void);
 
 #endif // !_PLAYER_H_

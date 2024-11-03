@@ -6,11 +6,12 @@ Camera3D camera;
 
 void InitPlayer(void)
 {
-    camera.position = (Vector3){0.0f, 0.0f, 0.0f};
-    camera.target = player.playerPosition;
+    camera.position = (Vector3){5.0f, 10.0f, 5.0f};
+    //camera.target = player.playerPosition;
+    camera.target = (Vector3){0.0f, 0.0f, 0.0f};
     camera.up = (Vector3){0.0f, 1.0f, 0.0f};
     camera.fovy = 70.0f;
-    camera.projection = 0;
+    camera.projection = CAMERA_PERSPECTIVE;
 
     player.playerModel = LoadModel("resources/models/Robot.glb");
     player.playerTexture = LoadTexture("resources/textures/RBase.png");
@@ -19,7 +20,6 @@ void InitPlayer(void)
 
 void UpdatePlayer(void)
 {
-    
     Vector3 targetPos;
 
     if (IsMouseButtonPressed(MOUSE_RIGHT_BUTTON))
@@ -39,17 +39,11 @@ void UpdatePlayer(void)
 
     if (distance > 0.1f) // Only move if we are far enough from the target
     {
-        float dt = GetFrameTime();
+        //float dt = GetFrameTime();
         float moveSpeed = 2.0f;
         direction = Vector3Normalize(direction);
-        player.playerPosition.x += direction.x * moveSpeed * dt;
-        player.playerPosition.z += direction.z * moveSpeed * dt;
-    }
-
-    if (IsKeyPressed(KEY_SPACE))
-    {
-        player.playerPosition = (Vector3){ 0.0f, 0.0f, 0.0f };
-        targetPos = player.playerPosition;
+        player.playerPosition.x += direction.x * moveSpeed;
+        player.playerPosition.z += direction.z * moveSpeed;
     }
 }
 
