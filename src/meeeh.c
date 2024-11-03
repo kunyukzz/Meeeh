@@ -2,7 +2,10 @@
 
 int main(void)
 {
-    InitWindow(GetScreenWidth(), GetScreenHeight(), "Meeeh");
+    const int screenWidth = 800;
+    const int screenHeight = 600;
+
+    InitWindow(screenWidth, screenHeight, "Meeeh");
     DisableCursor();
     SetTargetFPS(60);
 
