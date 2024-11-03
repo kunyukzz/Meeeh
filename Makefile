@@ -2,11 +2,11 @@
 CC := gcc
 
 # Compiler flags
-CFLAGS := -Wall -m64 -g 
+CFLAGS := -Wall -std=c99  
 
 # Linker flags
 LDFLAGS := -s
-LIBS := -lraylib
+LIBS := -lraylib -lGL -lpthread -lm
 
 # Directories
 SRC_DIR := src
