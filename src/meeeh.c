@@ -33,11 +33,12 @@ void Update(void)
 void Draw(void)
 {
     BeginDrawing();
-    ClearBackground(GRAY);
+    ClearBackground(BLACK);
 
         BeginMode3D(camera);
         DrawPlayer();
-        DrawGrid(10, 1.0f);
+        DrawGrid(20, 1.0f);
+        //DrawPlane((Vector3){0.0f, -1.0f, 0.0f},(Vector2){20.0f, 20.0f}, WHITE);
         EndMode3D();
 
     EndDrawing();

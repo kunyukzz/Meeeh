@@ -5,10 +5,23 @@
 
 #include "raylib.h"
 
+typedef struct Player_Transform
+{
+	Vector3 position;
+	Vector3 rotation;
+	Vector3 size;
+	float scale;
+	BoundingBox boundingBox;
+	bool canCollide;
+} Player_Transform;
+
 typedef struct Player {
-    Vector3 playerPosition;
+    Player_Transform transform;
+    //Vector3 playerPosition;
+    //Vector3 playerRotation;
     Model playerModel;
-    Rectangle playerBounds;
+    float rotationSpeed;
+    //Rectangle playerBounds;
     Texture2D playerTexture;
     Color playerColor;
 
