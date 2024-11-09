@@ -1,7 +1,6 @@
 #include "debug.h"
 
 Debug_Text debugText;
-
 Font myFont;
 
 void InitDebugFont(void)
@@ -17,4 +16,13 @@ void UnloadDebugFont(void)
 void DrawDebugText(Font font, const char *text, Vector2 *textpos)
 {
     DrawTextEx(font, text, *textpos, 20.0f, 1.0f, WHITE);
+}
+
+void DebugInfo(void)
+{
+    Vector2 debugTargetPos = { 10, 10 };
+    Vector2 debugPlayerRot = { 10, 30 };
+    DrawDebugText(myFont, TextFormat("Target Pos : [%.2f, %.2f]", targetPos.x, targetPos.z), &debugTargetPos);
+    DrawDebugText(myFont, TextFormat("Player Rot Origin : [%.2f, %.2f, %.2f]", player.transform.rotation.x, player.transform.rotation.y, player.transform.rotation.z), &debugPlayerRot);
+
 }

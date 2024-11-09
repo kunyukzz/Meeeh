@@ -17,8 +17,6 @@ typedef struct Player_Transform
 
 typedef struct Player {
     Player_Transform transform;
-    //Vector3 playerPosition;
-    //Vector3 playerRotation;
     Model playerModel;
     float rotationSpeed;
     //Rectangle playerBounds;
@@ -36,6 +34,7 @@ typedef struct Player {
 
 extern Player player;
 extern Camera3D camera;
+extern Vector3 targetPos;
 
 void InitPlayer(void);
 void UpdatePlayer(void);

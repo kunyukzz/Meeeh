@@ -1,9 +1,7 @@
 #include "player.h"
 #include "raymath.h"
 
-#include <math.h>
-
-static Vector3 targetPos = {0};
+Vector3 targetPos = {0};
 static bool targetDraw = false;
 
 Player player;
@@ -22,6 +20,7 @@ void InitPlayer(void)
     player.playerTexture = LoadTexture("resources/textures/RBase.png");
     player.transform.position = (Vector3){ 0.0f, 0.0f, 0.0f };
     player.transform.scale = 1.0f;
+    player.rotationSpeed = 0.01f;
 }
 
 void UpdatePlayer(void)
@@ -41,19 +40,19 @@ void UpdatePlayer(void)
     Vector3 direction = Vector3Subtract(targetPos, player.transform.position);
     float distance = Vector3Length(direction);
 
-    if (distance > 0.1f) // Only move if we are far enough from the target
+    if (distance > 0.1f) // Only move if far enough from the target
     {
         direction = Vector3Normalize(direction);
         
         // calculate rotation-Y angle
-        float y_angle = -(atan2(direction.z, direction.x) + PI / 2.0);
+        float y_angle = -(atan2(direction.z, direction.x) - PI / 2.0f);
         Vector3 newRotation = (Vector3){0.0f, y_angle, 0.0f};
 
         // slerp current rotation angle to new rotation angle
         // a.k.a in-between in animation world
-        const Quaternion start = QuaternionFromEuler(player.transform.rotation.x, player.transform.rotation.y, player.transform.rotation.z);
+        const Quaternion start = QuaternionFromEuler(player.transform.rotation.z, player.transform.rotation.y, player.transform.rotation.x);
 	    const Quaternion end   = QuaternionFromEuler(newRotation.z, newRotation.y, newRotation.x);
-	    const Quaternion slerp = QuaternionSlerp(start, end, player.rotationSpeed * GetFrameTime());
+	    const Quaternion slerp = QuaternionSlerp(start, end, player.rotationSpeed);
 
         // update rotation and rotation matrix
         player.playerModel.transform = QuaternionToMatrix(slerp);
@@ -61,7 +60,7 @@ void UpdatePlayer(void)
 
         // move player towards target position
         float dt = GetFrameTime();
-        float moveSpeed = 10.0f;
+        float moveSpeed = 5.0f;
         player.transform.position.x += direction.x * moveSpeed * dt;
         player.transform.position.z += direction.z * moveSpeed * dt;
     }
@@ -69,7 +68,7 @@ void UpdatePlayer(void)
 
 void DrawPlayer(void)
 {
-    if (targetDraw) DrawCylinder((Vector3){targetPos.x, targetPos.y - 0.1f, targetPos.z}, 1.0f, 1.0f, 0.1f, 16, RED);
+    if (targetDraw) DrawCylinder((Vector3){targetPos.x, targetPos.y - 0.1f, targetPos.z}, 0.5f, 0.5f, 0.1f, 16, RED);
     DrawModel(player.playerModel, player.transform.position, player.transform.scale, WHITE);
 }
 
