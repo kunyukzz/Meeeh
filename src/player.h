@@ -4,6 +4,7 @@
 #define _PLAYER_H_
 
 #include "raylib.h"
+#include "animator.h"
 
 typedef struct Player_Transform
 {
@@ -19,9 +20,11 @@ typedef struct Player {
     Player_Transform transform;
     Model playerModel;
     float rotationSpeed;
+    float moveSpeed;
     //Rectangle playerBounds;
     Texture2D playerTexture;
     Color playerColor;
+    Animator_Data animator;
 
     // Animation variables
     Rectangle frameRec;

@@ -4,7 +4,6 @@
 #define _DEBUG_H_
 
 #include "raylib.h"
-#include "player.h"
 
 typedef struct Debug_Text
 {

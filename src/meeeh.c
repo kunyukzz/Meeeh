@@ -2,8 +2,8 @@
 #include "player.h"
 #include "debug.h"
 
-static const int scrWidth = 800;
-static const int scrHeight = 600;
+static const int scrWidth = 960;
+static const int scrHeight = 720;
 
 static void Update(void);
 static void Draw(void);
@@ -40,7 +40,7 @@ void Draw(void)
 
         BeginMode3D(camera);
         DrawPlayer();
-        DrawGrid(20, 1.0f);
+        DrawGrid(30, 1.0f);
         //DrawPlane((Vector3){0.0f, -1.0f, 0.0f},(Vector2){20.0f, 20.0f}, WHITE);
         EndMode3D();
 
