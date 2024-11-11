@@ -8,7 +8,8 @@
 typedef enum
 {
     PLAYER_IDLE = 0,
-    PLAYER_WALK = 1,
+    PLAYER_IDLE2 = 1,
+    PLAYER_WALK = 2,
     // PLAYER_ATTACK,
     // PLAYER_DEATH
 } Animation_ID;
@@ -18,7 +19,8 @@ typedef struct Animator_Data
     ModelAnimation* modelAnim;
     int animCount;
     unsigned int animIndex;
-    unsigned int animCurrentFrame;
+    int animCurrentFrame;
+    int currentAnim;
 } Animator_Data;
 
 Animator_Data InitAnimator(const char* fileName);

@@ -1,11 +1,12 @@
 #include "player.h"
 #include "raymath.h"
 
+#include <stdio.h>
+
 Vector3 targetPos = { 0 };
 Vector3 direction = { 0 };
 static bool targetDraw = false;
-static bool isAligned = false;
-static bool isMoving = false;
+bool isMoving = false;
 
 Player player;
 Camera3D camera;
@@ -19,7 +20,6 @@ void InitPlayer(void)
 {
     camera.position = (Vector3){ player.transform.position.x + 10.f, 20.0f, player.transform.position.z + 10.0f };
     camera.target = player.transform.position;
-    // camera.target = (Vector3){ 0.0f, 0.0f, 0.0f };
     camera.up = (Vector3){ 0.0f, 1.0f, 0.0f };
     camera.fovy = 45.0f;
     camera.projection = CAMERA_PERSPECTIVE;
@@ -76,7 +76,6 @@ bool MoveTowards(Vector3* position, Vector3 targetPos, float speed)
         return false;
     }
 
-    *position = targetPos;
     return true;
 }
 
@@ -90,13 +89,12 @@ void UpdatePlayer(void)
     }
 
     RotateTowards(&player.transform.rotation, player.transform.position, targetPos, player.rotationSpeed);
+    UpdateAnimator(&player.animator, &player.playerModel, isMoving);
 
     if (MoveTowards(&player.transform.position, targetPos, player.moveSpeed))
     {
         isMoving = false; // Stop moving when target position is reached
     }
-
-    UpdateAnimator(&player.animator, &player.playerModel, isMoving);
 
     camera.target = player.transform.position;
     camera.position = (Vector3){ player.transform.position.x + 10.f, 20.0f, player.transform.position.z + 10.0f };
