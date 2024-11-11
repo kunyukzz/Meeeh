@@ -1,6 +1,5 @@
 #include "player.h"
 #include "raymath.h"
-#include <stdio.h>
 
 Vector3 targetPos = { 0 };
 Vector3 direction = { 0 };
@@ -13,8 +12,8 @@ Camera3D camera;
 
 // Private declarations
 void CreateRayTarget(Camera3D camera);
-bool RotateTowards(Vector3* rotation, Vector3 currentPos, Vector3 targetPos, float rotationSpeed, float angleThreshold);
-void MoveTowards(Vector3* position, Vector3 targetPos, float speed);
+void RotateTowards(Vector3* rotation, Vector3 currentPos, Vector3 targetPos, float rotationSpeed);
+bool MoveTowards(Vector3* position, Vector3 targetPos, float speed);
 
 void InitPlayer(void)
 {
@@ -31,6 +30,8 @@ void InitPlayer(void)
     player.transform.scale = 1.0f;
     player.moveSpeed = 3.0f;
     player.rotationSpeed = player.moveSpeed;
+
+    player.animator = InitAnimator("resources/models/NewRobot.glb");
 }
 
 void CreateRayTarget(Camera camera)
@@ -43,7 +44,7 @@ void CreateRayTarget(Camera camera)
     }
 }
 
-bool RotateTowards(Vector3* rotation, Vector3 currentPos, Vector3 targetPos, float rotationSpeed, float angleThreshold)
+void RotateTowards(Vector3* rotation, Vector3 currentPos, Vector3 targetPos, float rotationSpeed)
 {
     // calculate rotation-Y angle
     Vector3 direction = Vector3Subtract(targetPos, currentPos);
@@ -58,17 +59,9 @@ bool RotateTowards(Vector3* rotation, Vector3 currentPos, Vector3 targetPos, flo
 
     player.playerModel.transform = QuaternionToMatrix(slerp);
     *rotation = newRotation;
-
-    // Check if within the angle threshold
-    float angleDifference = fabs(rotation->y - y_angle);
-    return angleDifference < angleThreshold;
-
-    // update rotation and rotation matrix
-    // player.playerModel.transform = QuaternionToMatrix(slerp);
-    // player.transform.rotation = newRotation;
 }
 
-void MoveTowards(Vector3* position, Vector3 targetPos, float speed)
+bool MoveTowards(Vector3* position, Vector3 targetPos, float speed)
 {
     Vector3 direction = Vector3Subtract(targetPos, *position);
     float distance = Vector3Length(direction);
@@ -80,7 +73,11 @@ void MoveTowards(Vector3* position, Vector3 targetPos, float speed)
         float dt = GetFrameTime();
         position->x += direction.x * speed * dt;
         position->z += direction.z * speed * dt;
+        return false;
     }
+
+    *position = targetPos;
+    return true;
 }
 
 void UpdatePlayer(void)
@@ -92,17 +89,14 @@ void UpdatePlayer(void)
         isMoving = true;
     }
 
-    // isAligned = RotateTowards(&player.transform.rotation, player.transform.position, targetPos, player.rotationSpeed, 0.005f);
-    RotateTowards(&player.transform.rotation, player.transform.position, targetPos, player.rotationSpeed, 0.01f);
-    if (isMoving)
-    {
-        MoveTowards(&player.transform.position, targetPos, player.moveSpeed);
+    RotateTowards(&player.transform.rotation, player.transform.position, targetPos, player.rotationSpeed);
 
-        if (Vector3Distance(player.transform.position, targetPos) < 0.1f)
-        {
-            isMoving = false; // Stop moving when close to the target
-        }
+    if (MoveTowards(&player.transform.position, targetPos, player.moveSpeed))
+    {
+        isMoving = false; // Stop moving when target position is reached
     }
+
+    UpdateAnimator(&player.animator, &player.playerModel, isMoving);
 
     camera.target = player.transform.position;
     camera.position = (Vector3){ player.transform.position.x + 10.f, 20.0f, player.transform.position.z + 10.0f };

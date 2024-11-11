@@ -5,27 +5,27 @@
 
 #include "raylib.h"
 
-typedef enum 
+typedef enum
 {
     PLAYER_IDLE = 0,
     PLAYER_WALK = 1,
-    //PLAYER_ATTACK,
-    //PLAYER_DEATH
+    // PLAYER_ATTACK,
+    // PLAYER_DEATH
 } Animation_ID;
-
-typedef struct Animator_Animation
-{
-	ModelAnimation animation;
-	int id;
-} Animator_Animation;
 
 typedef struct Animator_Data
 {
-	Animator_Animation *animations;
-	unsigned int animationsCount;
-	Animator_Animation currentAnimation;
-	int animationFrame;
-	float nextFrame;
+    ModelAnimation* modelAnim;
+    int animCount;
+    unsigned int animIndex;
+    unsigned int animCurrentFrame;
 } Animator_Data;
+
+Animator_Data InitAnimator(const char* fileName);
+void SetAnimation(Animator_Data* animator, Animation_ID animID);
+void UpdateAnimator(Animator_Data* animator, Model* model, bool isMoving);
+void UnloadAnimator(Animator_Data* animator);
+
+//void PlayAnimation(Animator_Data animData, Model model);
 
 #endif // !_ANIMATOR_H_
