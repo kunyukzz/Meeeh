@@ -31,12 +31,6 @@ void InitPlayer(void)
     player.transform.scale = 1.0f;
     player.moveSpeed = 3.0f;
     player.rotationSpeed = player.moveSpeed;
-
-    player.animator = InitAnimator("resources/models/NewRobot.glb");
-    player.animator.frameSpeed = 10.0f;  // Frames per second
-    player.animator.currentTime = 0.0f;
-    player.animator.currentFrame = 0;
-    player.animator.currentAnim = ANIM_IDLE;  // Start with idle animation
 }
 
 void CreateRayTarget(Camera camera)
@@ -98,7 +92,7 @@ void UpdatePlayer(void)
         isMoving = true;
     }
 
-    //isAligned = RotateTowards(&player.transform.rotation, player.transform.position, targetPos, player.rotationSpeed, 0.005f);
+    // isAligned = RotateTowards(&player.transform.rotation, player.transform.position, targetPos, player.rotationSpeed, 0.005f);
     RotateTowards(&player.transform.rotation, player.transform.position, targetPos, player.rotationSpeed, 0.01f);
     if (isMoving)
     {
@@ -106,22 +100,12 @@ void UpdatePlayer(void)
 
         if (Vector3Distance(player.transform.position, targetPos) < 0.1f)
         {
-            isMoving = false;  // Stop moving when close to the target
+            isMoving = false; // Stop moving when close to the target
         }
-
-        SetAnimation(&player.animator, ANIM_WALK);
-        puts("player walk");
-    }
-    else
-    {
-        SetAnimation(&player.animator, ANIM_IDLE);
-        puts("player idle");
     }
 
     camera.target = player.transform.position;
     camera.position = (Vector3){ player.transform.position.x + 10.f, 20.0f, player.transform.position.z + 10.0f };
-
-    UpdateAnimator(&player.animator, &player.playerModel);
 }
 
 void DrawPlayer(void)
@@ -135,5 +119,4 @@ void UnloadPlayer(void)
 {
     UnloadModel(player.playerModel);
     UnloadTexture(player.playerTexture);
-    UnloadAnimator(&player.animator);
 }

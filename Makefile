@@ -2,10 +2,10 @@
 CC := gcc
 
 # Compiler flags
-CFLAGS := -Wall -std=c99  
+CFLAGS := -g -Wall -Wextra -std=c99
 
 # Linker flags
-LDFLAGS := -s
+# LDFLAGS := -s
 LIBS := -lraylib -lGL -lpthread -lm
 
 # Directories
@@ -18,7 +18,7 @@ SRC := $(wildcard $(SRC_DIR)/*.c)
 OBJ := $(patsubst $(SRC_DIR)/%.c,$(OBJ_DIR)/%.o,$(SRC))
 
 # Target executable
-TARGET := $(BIN_DIR)/main
+TARGET := $(BIN_DIR)/meeeh.out
 
 # Default target
 all: $(TARGET)
