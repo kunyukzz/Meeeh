@@ -1,10 +1,10 @@
 #include "player.h"
+#include "utils.h"
 #include "raymath.h"
-
-#include <stdio.h>
 
 Vector3 targetPos = { 0 };
 Vector3 direction = { 0 };
+
 static bool targetDraw = false;
 bool isMoving = false;
 
@@ -18,7 +18,8 @@ bool MoveTowards(Vector3* position, Vector3 targetPos, float speed);
 
 void InitPlayer(void)
 {
-    camera.position = (Vector3){ player.transform.position.x + 10.f, 20.0f, player.transform.position.z + 10.0f };
+    //camera.position = (Vector3){ player.transform.position.x + 10.f, 20.0f, player.transform.position.z + 10.0f };
+    camera.position = (Vector3){ player.transform.position.x + 5.f, 10.0f, player.transform.position.z + 5.0f };
     camera.target = player.transform.position;
     camera.up = (Vector3){ 0.0f, 1.0f, 0.0f };
     camera.fovy = 45.0f;
@@ -28,10 +29,12 @@ void InitPlayer(void)
     player.playerTexture = LoadTexture("resources/textures/RBase.png");
     player.transform.position = (Vector3){ 0.0f, 0.0f, 0.0f };
     player.transform.scale = 1.0f;
+    player.transform.size = (Vector3){ 1.0f, 3.0f, 1.0f };
     player.moveSpeed = 3.0f;
     player.rotationSpeed = player.moveSpeed;
 
     player.animator = InitAnimator("resources/models/NewRobot.glb");
+    player.transform.boundingBox = Utils_MakeBoundingBox(player.transform.position, player.transform.size); 
 }
 
 void CreateRayTarget(Camera camera)
@@ -81,6 +84,8 @@ bool MoveTowards(Vector3* position, Vector3 targetPos, float speed)
 
 void UpdatePlayer(void)
 {
+    player.transform.boundingBox = Utils_MakeBoundingBox(player.transform.position, player.transform.size); 
+
     if (IsMouseButtonPressed(MOUSE_RIGHT_BUTTON))
     {
         CreateRayTarget(camera);
@@ -93,18 +98,20 @@ void UpdatePlayer(void)
 
     if (MoveTowards(&player.transform.position, targetPos, player.moveSpeed))
     {
-        isMoving = false; // Stop moving when target position is reached
+        isMoving = false; 
+        targetDraw = false;
     }
 
     camera.target = player.transform.position;
-    camera.position = (Vector3){ player.transform.position.x + 10.f, 20.0f, player.transform.position.z + 10.0f };
+    camera.position = (Vector3){ player.transform.position.x + 5.f, 10.0f, player.transform.position.z + 5.0f };
 }
 
 void DrawPlayer(void)
 {
     if (targetDraw)
-        DrawCylinder((Vector3){ targetPos.x, targetPos.y - 0.1f, targetPos.z }, 0.5f, 0.5f, 0.1f, 16, RED);
+        DrawCylinder((Vector3){ targetPos.x, targetPos.y - 0.1f, targetPos.z }, 0.5f, 0.5f, 0.01f, 16, RED);
     DrawModel(player.playerModel, player.transform.position, player.transform.scale, WHITE);
+    DrawBoundingBox(player.transform.boundingBox, YELLOW);
 }
 
 void UnloadPlayer(void)

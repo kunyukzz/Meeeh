@@ -2,8 +2,8 @@
 #include "player.h"
 #include "debug.h"
 
-static const int scrWidth = 960;
-static const int scrHeight = 720;
+static const int scrWidth = 1080;
+static const int scrHeight = 760;
 
 static void Update(void);
 static void Draw(void);
@@ -45,6 +45,7 @@ void Draw(void)
         EndMode3D();
 
     DebugInfo();
+    DrawFPS(scrWidth - 80, 10);
     EndDrawing();
 }
 

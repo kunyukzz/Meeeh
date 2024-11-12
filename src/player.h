@@ -21,15 +21,9 @@ typedef struct Player {
     Model playerModel;
     float rotationSpeed;
     float moveSpeed;
-    //Rectangle playerBounds;
     Texture2D playerTexture;
     Color playerColor;
     Animator_Data animator;
-
-    // Animation variables
-    Rectangle frameRec;
-    int currentFrame;
-    int currentSeq;
 
     int numLifes;
     bool dead;

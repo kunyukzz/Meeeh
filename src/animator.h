@@ -26,8 +26,5 @@ typedef struct Animator_Data
 Animator_Data InitAnimator(const char* fileName);
 void SetAnimation(Animator_Data* animator, Animation_ID animID);
 void UpdateAnimator(Animator_Data* animator, Model* model, bool isMoving);
-void UnloadAnimator(Animator_Data* animator);
-
-//void PlayAnimation(Animator_Data animData, Model model);
 
 #endif // !_ANIMATOR_H_
