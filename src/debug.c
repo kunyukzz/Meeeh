@@ -7,7 +7,7 @@ Font myFont;
 
 void InitDebugFont(void)
 {
-    myFont = LoadFont("resources/JetBrainsMonoNLNerdFont-Regular.ttf");
+    myFont = LoadFont("resources/fonts/JetBrainsMonoNLNerdFont-Regular.ttf");
 }
 
 void UnloadDebugFont(void)
